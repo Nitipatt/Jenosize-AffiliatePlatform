@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white border border-gray-200 rounded-2xl p-6 shadow-md transition-shadow;
+  }
+  .card-hover {
+    @apply card duration-300 hover:border-brand-500 hover:shadow-xl hover:-translate-y-1;
+  }
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-brand-600 to-[#00BCCE] text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-secondary {
+    @apply px-6 py-3 bg-white text-gray-800 font-medium rounded-xl border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300;
+  }
+  .btn-shopee {
+    @apply px-5 py-2.5 bg-gradient-to-r from-shopee to-orange-500 text-white font-semibold rounded-xl shadow-lg shadow-shopee/25 hover:shadow-shopee/40 transition-all duration-300 hover:-translate-y-0.5;
+  }
+  .btn-lazada {
+    @apply px-5 py-2.5 bg-gradient-to-r from-[#000080] to-lazada text-white font-semibold rounded-xl shadow-lg shadow-lazada/25 hover:shadow-lazada/40 transition-all duration-300 hover:-translate-y-0.5;
+  }
+  .input {
+    @apply w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all duration-200;
+  }
+  .badge {
+    @apply px-3 py-1 text-xs font-semibold rounded-full;
+  }
+  .badge-best {
+    @apply badge bg-emerald-100 text-emerald-600 border border-emerald-200;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#01BE8C] via-[#00BCCE] to-[#0166E0];
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 40px rgba(1, 102, 224, 0.15);
+}
+
+/* Table styles */
+.table-row {
+  @apply border-b border-gray-200 hover:bg-gray-50 transition-colors;
+}

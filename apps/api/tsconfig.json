@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "@affiliate/adapters": ["../../packages/adapters/src"],
+      "@affiliate/database": ["../../packages/database/src"]
+    },
+    "lib": ["dom", "es2022"]
+  },
+  "include": ["src/**/*"]
+}
