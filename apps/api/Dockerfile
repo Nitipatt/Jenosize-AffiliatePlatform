@@ -20,7 +20,9 @@ WORKDIR /app
 COPY packages/adapters ./packages/adapters/
 COPY apps/api ./apps/api/
 COPY tsconfig.base.json ./
-RUN npm run build -w apps/api
+RUN npm run build -w packages/database && \
+    npm run build -w packages/adapters && \
+    npm run build -w apps/api
 
 # Production
 FROM base AS runner
