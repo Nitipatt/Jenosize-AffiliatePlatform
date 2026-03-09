@@ -28,31 +28,26 @@ export default function AdminLayout({
   useEffect(() => {
     let mounted = true;
 
+    // On the login page, skip auth check to avoid unnecessary 401 errors.
+    // Just mark as unauthenticated so the login form renders immediately.
+    if (isLoginPage) {
+      setIsAuthenticated(false);
+      return;
+    }
+
     const checkAuth = async () => {
       try {
         const res = await fetchWithAuth(`/api/auth/me`);
         if (!mounted) return;
         
         if (res.ok) {
-          if (isLoginPage) {
-            router.push('/admin/dashboard');
-          } else {
-            setIsAuthenticated(true);
-          }
+          setIsAuthenticated(true);
         } else {
-          if (!isLoginPage) {
-            router.push('/admin/login');
-          } else {
-            setIsAuthenticated(false);
-          }
+          router.push('/admin/login');
         }
       } catch {
         if (!mounted) return;
-        if (!isLoginPage) {
-          router.push('/admin/login');
-        } else {
-          setIsAuthenticated(false);
-        }
+        router.push('/admin/login');
       }
     };
 
