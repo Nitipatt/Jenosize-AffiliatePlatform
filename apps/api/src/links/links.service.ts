@@ -34,7 +34,11 @@ export class LinksService {
     if (!bestOffer) throw new NotFoundException('No offers found for product');
 
     const shortCode = generateShortCode();
-    const targetUrl = `${bestOffer.externalUrl}?utm_campaign=${campaign.utmCampaign}&utm_source=affiliate&utm_medium=link`;
+    const targetUrlObj = new URL(bestOffer.externalUrl);
+    targetUrlObj.searchParams.set('utm_campaign', campaign.utmCampaign);
+    targetUrlObj.searchParams.set('utm_source', 'affiliate');
+    targetUrlObj.searchParams.set('utm_medium', 'link');
+    const targetUrl = targetUrlObj.toString();
 
     const link = await this.prisma.link.create({
       data: {
