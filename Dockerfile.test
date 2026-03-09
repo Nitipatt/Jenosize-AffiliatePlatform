@@ -1,0 +1,43 @@
+FROM ubuntu:22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies, Node.js 20, Postgres, and Redis
+RUN apt-get update && apt-get install -y curl build-essential redis-server postgresql postgresql-contrib \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# Configure Postgres
+USER postgres
+RUN /etc/init.d/postgresql start && \
+    psql --command "CREATE ROLE postgres WITH SUPERUSER LOGIN PASSWORD '12345';" || true && \
+    psql --command "ALTER USER postgres WITH PASSWORD '12345';" && \
+    createdb -O postgres aff || true
+USER root
+
+WORKDIR /app
+# Copy project files
+COPY . .
+
+# Set environment variables matching CI
+ENV DATABASE_URL="postgresql://postgres:12345@localhost:5432/aff?schema=public"
+ENV REDIS_HOST="localhost"
+ENV REDIS_PORT="6379"
+ENV JWT_ACCESS_SECRET="ci-test-access-secret"
+ENV JWT_REFRESH_SECRET="ci-test-refresh-secret"
+ENV NEXT_PUBLIC_API_URL="http://localhost:8080"
+
+# Execute exactly the CI pipeline script
+RUN service postgresql start && \
+    redis-server --daemonize yes && \
+    sleep 3 && \
+    npm install && \
+    npx prisma generate --schema=packages/database/prisma/schema.prisma && \
+    npx prisma migrate deploy --schema=packages/database/prisma/schema.prisma && \
+    npm run build -w packages/database && \
+    npm run build -w packages/adapters && \
+    npm run test -w packages/adapters && \
+    npm run test -w apps/api && \
+    npm run test:e2e -w apps/api && \
+    npm run build -w apps/web

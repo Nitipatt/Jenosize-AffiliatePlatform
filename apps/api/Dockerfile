@@ -12,7 +12,6 @@ RUN npm install --workspace=apps/api
 # Generate Prisma client
 FROM deps AS prisma
 COPY packages/database ./packages/database/
-COPY .env .env
 RUN npx prisma generate --schema=packages/database/prisma/schema.prisma
 
 # Build
