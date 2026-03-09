@@ -1,12 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
-import * as cookieParser from 'cookie-parser';
+import request from 'supertest';
+import cookieParser from 'cookie-parser';
 import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/prisma/prisma.service';
 
 describe('Affiliate Platform (e2e)', () => {
   let app: INestApplication;
-  let cookies: string[];
+  let cookies: string;
+  const testUser = 'user_' + Date.now();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -18,6 +20,19 @@ describe('Affiliate Platform (e2e)', () => {
     app.useGlobalPipes(
       new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
     );
+
+    // Clean DB
+    const prisma = app.get(PrismaService);
+    try {
+      if (prisma) {
+        await prisma.link.deleteMany();
+        await prisma.campaign.deleteMany();
+        await prisma.offer.deleteMany();
+        await prisma.product.deleteMany();
+        await prisma.user.deleteMany();
+      }
+    } catch(e) {}
+
     await app.init();
   });
 
@@ -29,21 +44,22 @@ describe('Affiliate Platform (e2e)', () => {
     it('POST /api/auth/register → 201', () => {
       return request(app.getHttpServer())
         .post('/api/auth/register')
-        .send({ username: 'e2e_admin', password: 'test123456' })
+        .send({ username: testUser, password: 'test123456' })
         .expect(201)
         .expect((res) => {
-          expect(res.body.username).toBe('e2e_admin');
+          expect(res.body.username).toBe(testUser);
         });
     });
 
     it('POST /api/auth/login → 200 with cookies', async () => {
       const res = await request(app.getHttpServer())
         .post('/api/auth/login')
-        .send({ username: 'e2e_admin', password: 'test123456' })
+        .send({ username: testUser, password: 'test123456' })
         .expect(200);
 
       expect(res.body.message).toBe('Login successful');
-      cookies = res.headers['set-cookie'];
+      const rawCookies = res.headers['set-cookie'] as unknown as string[];
+      cookies = rawCookies.map(c => c.split(';')[0]).join('; ');
       expect(cookies).toBeDefined();
     });
   });
@@ -56,17 +72,19 @@ describe('Affiliate Platform (e2e)', () => {
     it('POST /api/products → 201', async () => {
       const res = await request(app.getHttpServer())
         .post('/api/products')
+        .set('Cookie', cookies)
         .send({ source_url: 'https://shopee.co.th/product/100/200' })
         .expect(201);
 
       productId = res.body.id;
       expect(productId).toBeDefined();
       expect(res.body.title).toContain('Shopee');
-    });
+    }, 15000);
 
     it('GET /api/products/:id/offers → 200', () => {
       return request(app.getHttpServer())
         .get(`/api/products/${productId}/offers`)
+        .set('Cookie', cookies)
         .expect(200)
         .expect((res) => {
           expect(res.body).toBeInstanceOf(Array);

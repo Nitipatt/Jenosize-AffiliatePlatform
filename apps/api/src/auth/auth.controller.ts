@@ -25,6 +25,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Register a new admin user' })
   @ApiResponse({ status: 201, description: 'User registered' })
   async register(@Body() dto: RegisterDto) {
+    console.log('Register DTO Received:', dto);
     return this.authService.register(dto);
   }
 
