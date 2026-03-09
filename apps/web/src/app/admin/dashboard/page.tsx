@@ -41,7 +41,7 @@ export default function DashboardPage() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/dashboard`)
+    fetchWithAuth(`/api/dashboard`)
       .then((res) => res.json())
       .then(setData)
       .catch(console.error)

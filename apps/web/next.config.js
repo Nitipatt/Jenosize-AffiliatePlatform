@@ -5,11 +5,11 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/:path*`,
+        destination: `${process.env.API_BACKEND_URL ?? 'http://localhost:8080'}/api/:path*`,
       },
       {
         source: '/go/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/go/:path*`,
+        destination: `${process.env.API_BACKEND_URL ?? 'http://localhost:8080'}/go/:path*`,
       },
     ];
   },

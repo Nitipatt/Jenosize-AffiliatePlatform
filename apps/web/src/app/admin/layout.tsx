@@ -30,7 +30,7 @@ export default function AdminLayout({
 
     const checkAuth = async () => {
       try {
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/auth/me`);
+        const res = await fetchWithAuth(`/api/auth/me`);
         if (!mounted) return;
         
         if (res.ok) {
@@ -111,7 +111,7 @@ export default function AdminLayout({
           <button
             onClick={async () => {
               try {
-                await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/auth/logout`, {
+                await fetch(`/api/auth/logout`, {
                   method: 'POST',
                   credentials: 'include',
                 });

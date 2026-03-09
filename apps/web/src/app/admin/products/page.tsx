@@ -35,7 +35,7 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       const res = await fetchWithAuth(
-        `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/products`,
+        `/api/products`,
       );
       if (res.ok) setProducts(await res.json());
     } catch (e) {
@@ -50,7 +50,7 @@ export default function ProductsPage() {
   const handleUpdate = async (id: string) => {
     try {
       const res = await fetchWithAuth(
-        `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/products/${id}`,
+        `/api/products/${id}`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -70,7 +70,7 @@ export default function ProductsPage() {
     if (!window.confirm(t('products.confirmDelete'))) return;
     try {
       const res = await fetchWithAuth(
-        `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/products/${id}`,
+        `/api/products/${id}`,
         { method: 'DELETE' }
       );
       if (res.ok) fetchProducts();
@@ -86,7 +86,7 @@ export default function ProductsPage() {
 
     try {
       const res = await fetchWithAuth(
-        `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/products`,
+        `/api/products`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

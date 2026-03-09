@@ -34,7 +34,7 @@ export default function LinksPage() {
   const [error, setError] = useState('');
   const { t } = useTranslation();
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080';
+  const apiUrl = '';
 
   const fetchAll = async () => {
     try {

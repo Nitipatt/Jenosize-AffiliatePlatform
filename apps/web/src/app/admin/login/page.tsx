@@ -12,7 +12,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080';
+  const apiUrl = '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -29,7 +29,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/products`,
+      `/api/products`,
       { cache: 'no-store' },
     )
       .then((res) => (res.ok ? res.json() : []))
