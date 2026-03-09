@@ -9,6 +9,7 @@ describe('ProductsService', () => {
     offer: {
       findFirst: jest.fn(),
       update: jest.fn(),
+      create: jest.fn(),
     },
     product: {
       create: jest.fn(),
@@ -25,6 +26,25 @@ describe('ProductsService', () => {
     }).compile();
 
     service = module.get<ProductsService>(ProductsService);
+
+    // Mock the adapter factory
+    jest.spyOn(service as any, 'adapterFactory', 'get').mockReturnValue({
+      getAdapter: jest.fn().mockImplementation((url) => {
+        if (url.includes('amazon')) {
+          throw new Error('No marketplace adapter found');
+        }
+        return {
+          fetchProduct: jest.fn().mockResolvedValue({
+            title: url.includes('shopee') ? 'Shopee Product 456' : 'Mock Product',
+            price: 299.0,
+            imageUrl: 'mock-image.png',
+            marketplace: url.includes('shopee') ? 'SHOPEE' : 'LAZADA',
+            storeName: 'Mock Store',
+            externalUrl: url,
+          }),
+        };
+      }),
+    });
   });
 
   afterEach(() => jest.clearAllMocks());

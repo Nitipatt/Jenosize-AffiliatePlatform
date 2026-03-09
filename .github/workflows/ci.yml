@@ -59,6 +59,11 @@ jobs:
       - name: Run database migrations
         run: npx prisma migrate deploy --schema=packages/database/prisma/schema.prisma
 
+      - name: Build packages
+        run: |
+          npm run build -w packages/database
+          npm run build -w packages/adapters
+
       - name: Lint adapters
         run: npm run test -w packages/adapters
 
