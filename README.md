@@ -1,6 +1,6 @@
 # Jenosize Affiliate Platform
 
-> Affiliate web app for promotion & marketplace price comparison (Lazada / Shopee)
+> Affiliate web app for promotion & marketplace price comparison (Lazada / Shopee).
 
 ---
 
