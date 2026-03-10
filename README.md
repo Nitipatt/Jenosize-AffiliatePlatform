@@ -21,6 +21,7 @@
 
 ### 🎬 Demo Video
 
+https://github.com/Nitipatt/Jenosize-AffiliatePlatform/blob/main/Demo.mp4
 <video src="https://github.com/Nitipatt/Jenosize-AffiliatePlatform/blob/main/Demo.mp4" controls width="100%"></video>
 
 ---
